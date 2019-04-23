@@ -1,6 +1,10 @@
 import controller.HashController;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,7 +29,13 @@ public class Main {
         } else if (args.length == 1) {
             filenames = new String[]{args[0]};
         } else {
-            throw new Exception("No File Specified");
+            if (new File("list.txt").exists()) {
+                Path path = new File("list.txt").toPath();
+                List<String> lineList = Files.readAllLines(path, StandardCharsets.UTF_8);
+                filenames = lineList.toArray(new String[]{});
+            } else {
+                throw new Exception("No File Specified");
+            }
         }
 
         for (String filename : filenames) {
