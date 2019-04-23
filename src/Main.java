@@ -17,19 +17,30 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         String[] hashes = {"MD5", "SHA-256", "SHA-512"};
-        String filename;
+        String[] filenames;
 
-        if (args.length == 1) {
-            filename = args[0];
+        if (args.length > 1) {
+            filenames = new String[args.length];
+            System.arraycopy(args, 0, filenames, 0, args.length);
+        } else if (args.length == 1) {
+            filenames = new String[]{args[0]};
         } else {
             throw new Exception("No File Specified");
         }
 
-        HashController hashController = new HashController(hashes, new File(filename));
-        Map<String, String> result = hashController.runAndGetHashes();
+        for (String filename : filenames) {
 
-        for (String hash : hashes) {
-            System.out.println(hash + " = " + result.get(hash));
+            System.out.println(filename);
+
+            HashController hashController = new HashController(hashes, new File(filename));
+            Map<String, String> result = hashController.runAndGetHashes();
+
+            for (String hash : hashes) {
+                System.out.println(hash + " = " + result.get(hash));
+            }
+
+            System.out.println(System.lineSeparator());
+
         }
 
     }
